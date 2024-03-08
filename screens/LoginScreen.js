@@ -1,11 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import LoginButton from '../components/LoginButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import authenticate from '../auth/Authenticate';
-import { useEffect } from 'react';
 
 const logo = require("../assets/TuneTasting-Logo.png");
 
@@ -16,9 +11,9 @@ const LoginScreen = () => {
             <Image source={logo} style={styles.image} />
             <Text style={styles.text}> Your Daily Song Discovery! </Text>
         </View>
-        <View style={styles.buttonContainer}>
-            <LoginButton />
-        </View>
+            <View style={styles.buttonContainer}>
+                <LoginButton />
+            </View>
     </LinearGradient>
     );
 }

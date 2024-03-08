@@ -7,24 +7,21 @@ import { redirectToAuthCodeFlow } from './AuthCodeFlow';
 export default async function authenticate() {
     console.log("Authenticating with spotify");
     const clientId = "da18b53a39aa4a058fc6ad6ee05af0ff";
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
 
-    try {
-        const params = new URLSearchParams(window.location.search);
-        const code = params.get("code");
-
-        if (!code) {
-            redirectToAuthCodeFlow(clientId);
-        } else {
-            const accessToken = await getAccessToken(clientId, code);
-            const profile = await fetchProfile(accessToken);
-            console.log("Authenticated as", profile.display_name);
-        }
-    } catch (error) {
-        console.error("Error authenticating with spotify", error);
+    if (!code) {
+        console.log("No code found, redirecting to spotify");
+        redirectToAuthCodeFlow(clientId);
+    } else {
+        const accessToken = await getAccessToken(clientId, code);
+        const profile = await fetchProfile(accessToken);
+        console.log(profile);
     }
+    console.log("Authentication complete");
 };
 
-async function getAccessToken(clientId, code) {
+export async function getAccessToken(clientId, code) {
     const verifier = localStorage.getItem("verifier");
 
     const params = new URLSearchParams();
