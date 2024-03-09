@@ -19,6 +19,6 @@ dist/
 *.ipa
 
 # Dependency directories
-ios/
+ios/Pods/
 android/.gradle/
 android/app/build/

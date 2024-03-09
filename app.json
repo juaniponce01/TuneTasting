@@ -4,7 +4,8 @@
     "slug": "TuneTasting",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/TuneTasting-Icon.png",
+    "scheme": "com.anonymous.TuneTasting",
+    "icon": "./assets/TuneTasting-complete-icon.jpg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -22,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.tunetasting"
     },
     "web": {
       "favicon": "./assets/favicon.png"

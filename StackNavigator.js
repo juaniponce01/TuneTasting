@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./screens/HomeScreen";
+import HomeScreen from "./src/screens/HomeScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
 import { Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
-import ProfileScreen from "./screens/ProfileScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import LoginScreen from "./screens/LoginScreen";
+import LoginScreen from "./src/screens/LoginScreen";
 
 const Tab = createBottomTabNavigator();
 
