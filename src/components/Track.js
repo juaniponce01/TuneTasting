@@ -4,103 +4,108 @@ import { Audio } from 'expo-av';
 import { AudioPlayer } from './AudioPlayer';
 import ButtonPlayer from './ButtonPlayer';
 
-const Track = ({ track }) => {
-    // const [sound, setSound] = useState();
-    // const [audioStatus, setAudioStatus] = useState('loading'); // ['loading', 'playing', 'paused'
-    // const [isPlaying, setIsPlaying] = useState(false);
-    // const [isActive, setIsActive] = useState(false);
-    // const [loading, setLoading] = useState(false);
-    // const [isPlayable, setIsPlayable] = useState(false);
-    // const [totalDuration, setTotalDuration] = useState(0);
-    // const [duration, setDuration] = useState(0);
-    // const playAudio = async () => {
-    //     await sound.playAsync();};
-    // const pauseAudio = async () => {
-    //     await sound.pauseAsync();};
-    // const seekAudio = async (position) => {
-    //     await sound.setPositionAsync(position);};
-    // const playFromPosition = async (position) => {
-    //     await sound.playFromPositionAsync(position);};
-    // const track_url = track.preview_url;
-    // async function loadAudio() {
-    //     try {
-    //         const { sound, status } = await Audio.Sound.createAsync(
-    //             {
-    //                 uri: {track_url},
-    //                 headers: {
-    //                     key: value,
-    //                 },
-    //             },
-    //             { isLooping: false },
-    //         );
-    //         console.log('Sound object', sound);
-    //         console.log('Status object', status);
-    //         setSound(sound);
-    //         setIsPlayable(true);
-    //         setTotalDuration(status.durationMillis);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
+
+const Track = ({ key, track }) => {
+    const track_url = track.preview_url;
+    const [sound, setSound] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+
     // useEffect(() => {
-    //     loadAudio();
-    //     return sound
-    //         ? () => {
-    //             console.log('Unloading Sound');
+    //     const loadSound = async () => {
+    //         try {
+    //             if (track_url) {
+    //                 const { sound } = await Audio.Sound.createAsync(
+    //                     { uri: track_url }
+    //                 );
+    //                 setSound(sound);
+    //             } else {
+    //                 console.warn('Track preview URL is null or undefined');
+    //             }
+    //         } catch (error) {
+    //             console.error('Failed to load sound', error);
+    //         }
+    //     };
+
+    //     loadSound();
+
+    //     // Cleanup function to unload the sound when the component unmounts
+    //     return () => {
+    //         if (sound) {
     //             sound.unloadAsync();
     //         }
-    //         : undefined;
-    // }, [sound]);
+    //     };
+    // }, [track_url]); // Re-run effect when the track_url changes
+    // const playSound = async () => {
+    //     try {
+    //         if (sound) {
+    //             if (!isPlaying) {
+    //                 await sound.playAsync();
+    //                 setIsPlaying(true);
+    //             } else {
+    //                 await sound.pauseAsync();
+    //                 setIsPlaying(false);
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error('Failed to play/pause the sound', error);
+    //     }
+    // };
+
     return (
-        <TouchableOpacity style={styles.container} onPress={() => {/* Handle onPress event */ }}>
-            <Image source={{ url: track.album.images[0].url }} style={styles.image} />
+        <TouchableOpacity style={styles.container}>
+            <View style={styles.imageContainer}>
+                <Image source={{ uri: track.album.images[0].url }} style={styles.image} />
+            </View>
             <View style={styles.info}>
                 <Text style={styles.title}>{track.name}</Text>
                 <Text style={styles.artist}>{track.artists.map(artist => artist.name).join(', ')}</Text>
                 <Text style={styles.album}>{track.album.name}</Text>
-                {/* <ButtonPlayer track_url={track_url} /> */}
-                {/* <AudioPlayer active={isActive} playable={isPlayable} loading={loading} isPlaying={isPlaying} playAudio={playAudio} pauseAudio={pauseAudio} totalDuration={totalDuration} seekAudio={seekAudio} duration={duration} /> */}
+                {/* Render your play/pause button here */}
+                {/* <ButtonPlayer isPlaying={isPlaying} onPress={playSound} /> */}
             </View>
         </TouchableOpacity>
     );
 };
 
+
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 10,
-        marginBottom: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
         width: 350,
+        height: 500,
+        borderRadius: 18,
+        marginHorizontal: 20,
+        marginVertical: 20,
+        backgroundColor: '#FFF', // Example background color
+    },
+    imageContainer: {
+        alignItems: 'center',
+        borderRadius: 10,
+        paddingVertical: 20,
     },
     image: {
-        width: 100,
-        height: 100,
+        width: 300,
+        height: 300,
         borderRadius: 10,
     },
     info: {
         flex: 1,
-        marginLeft: 10,
+        marginHorizontal: 30,
     },
     title: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'bold',
+        numberOfLines: 1,
+        ellipsizeMode: 'tail',
     },
     artist: {
-        fontSize: 14,
+        fontSize: 18,
         color: '#666',
+        fontWeight: 'bold',
+        numberOfLines: 1,
+        ellipsizeMode: 'tail',
     },
     album: {
-        fontSize: 14,
+        fontSize: 18,
         color: '#666',
     },
     // Add more styles as needed

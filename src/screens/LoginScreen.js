@@ -16,7 +16,6 @@ const LoginScreen = () => {
         console.log("navigating to main screen");
         navigation.navigate("Main");
     }
-    
     useEffect(() => {
         const checkTokenValidity = async () => {
             const accessToken = await AsyncStorage.getItem("token");

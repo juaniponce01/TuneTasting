@@ -7,12 +7,14 @@ import NoTrackList from '../components/NoTrackList'
 import TrackList from '../components/TrackList'
 
 const HomeScreen = () => {
-  let [trackList, setTrackList] = useState([]); 
-
+  const [trackList, setTrackList] = useState([]); // State to store the track list
+  
   const getTrackList = async () => {
-    const tracks = await AsyncStorage.getItem('tracks');
-    if (tracks) {
-      setTrackList(JSON.parse(tracks));
+    const savedTracks = await AsyncStorage.getItem('tracks');
+    if (savedTracks) {
+      setTrackList(JSON.parse(savedTracks));
+    } else {
+      handleFetchTracks();
     }
   }
 
@@ -21,21 +23,26 @@ const HomeScreen = () => {
     AsyncStorage.setItem('tracks', JSON.stringify(recommendations)); // Save tracks to async storage
     console.log("Fetching new tracks")
     setTrackList(recommendations); // Update track list
+    console.log("first preview url: ", recommendations[0].preview_url)
   };
 
   useEffect(() => {
-    handleFetchTracks();
+    getTrackList();
   }, [])
 
   return (
     <SafeAreaView >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}>
         {trackList.length > 0 ? 
           <TrackList trackList={trackList} /> 
           : 
           <NoTrackList />}
-        <TasteButton onPress={handleFetchTracks} />
+        {/* <TasteButton onPress={handleFetchTracks} /> */}
       </ScrollView>
+      
     </SafeAreaView>
   )
 }
@@ -47,5 +54,6 @@ const styles = StyleSheet.create({
     flexGrow: 10,
     marginBottom: 200,
     alignItems: 'center',
+    paddingBottom: 40,
   },
 })

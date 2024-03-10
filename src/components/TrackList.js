@@ -5,7 +5,7 @@ import Track from './Track';
 class TrackList extends React.Component {
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 {this.props.trackList.map((track, index) => (
                     <Track key={index} track={track} />
                 ))}
@@ -17,4 +17,10 @@ class TrackList extends React.Component {
 export default TrackList;
 
 const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
