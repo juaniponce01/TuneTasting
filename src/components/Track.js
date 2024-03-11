@@ -1,55 +1,18 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { Audio } from 'expo-av';
 import { AudioPlayer } from './AudioPlayer';
 import ButtonPlayer from './ButtonPlayer';
 
 
-const Track = ({ key, track }) => {
+const Track = ({ index, track, playTrack }) => {
     const track_url = track.preview_url;
     const [sound, setSound] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
 
-    // useEffect(() => {
-    //     const loadSound = async () => {
-    //         try {
-    //             if (track_url) {
-    //                 const { sound } = await Audio.Sound.createAsync(
-    //                     { uri: track_url }
-    //                 );
-    //                 setSound(sound);
-    //             } else {
-    //                 console.warn('Track preview URL is null or undefined');
-    //             }
-    //         } catch (error) {
-    //             console.error('Failed to load sound', error);
-    //         }
-    //     };
-
-    //     loadSound();
-
-    //     // Cleanup function to unload the sound when the component unmounts
-    //     return () => {
-    //         if (sound) {
-    //             sound.unloadAsync();
-    //         }
-    //     };
-    // }, [track_url]); // Re-run effect when the track_url changes
-    // const playSound = async () => {
-    //     try {
-    //         if (sound) {
-    //             if (!isPlaying) {
-    //                 await sound.playAsync();
-    //                 setIsPlaying(true);
-    //             } else {
-    //                 await sound.pauseAsync();
-    //                 setIsPlaying(false);
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.error('Failed to play/pause the sound', error);
-    //     }
-    // };
+    const handlePlayTrack = () => {
+        playTrack(index)
+    }
 
     return (
         <TouchableOpacity style={styles.container}>
@@ -60,6 +23,7 @@ const Track = ({ key, track }) => {
                 <Text style={styles.title}>{track.name}</Text>
                 <Text style={styles.artist}>{track.artists.map(artist => artist.name).join(', ')}</Text>
                 <Text style={styles.album}>{track.album.name}</Text>
+                <Button title="Play" onPress={handlePlayTrack} />
                 {/* Render your play/pause button here */}
                 {/* <ButtonPlayer isPlaying={isPlaying} onPress={playSound} /> */}
             </View>
@@ -94,15 +58,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        numberOfLines: 1,
-        ellipsizeMode: 'tail',
     },
     artist: {
         fontSize: 18,
         color: '#666',
         fontWeight: 'bold',
-        numberOfLines: 1,
-        ellipsizeMode: 'tail',
     },
     album: {
         fontSize: 18,

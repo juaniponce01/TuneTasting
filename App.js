@@ -3,13 +3,16 @@ import { StyleSheet } from 'react-native';
 import Navigation from './StackNavigator';
 import * as Linking from 'expo-linking';
 import { useEffect } from 'react';
+import { PlayerContext } from './PlayerContext';
 
 
 export default function App() {
     return (
     <>
+      <PlayerContext>
         <StatusBar style="light" />
         <Navigation />
+      </PlayerContext>
     </>
 
     );

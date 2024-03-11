@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 import LoginButton from '../components/LoginButton';
 import { useNavigation } from '@react-navigation/native';
@@ -12,10 +12,11 @@ const LoginScreen = () => {
     const navigation = useNavigation();
 
     const handleAuthentication = async () => {
-        authenticate();
-        console.log("navigating to main screen");
+        await authenticate();
+        console.log("navigating to main");
         navigation.navigate("Main");
     }
+
     useEffect(() => {
         const checkTokenValidity = async () => {
             const accessToken = await AsyncStorage.getItem("token");
@@ -45,10 +46,13 @@ const LoginScreen = () => {
         <View style={styles.container}>
             <Image source={logo} style={styles.image} />
             <Text style={styles.text}> Your Daily Song Discovery! </Text>
-        </View>
             <View style={styles.buttonContainer}>
-                <LoginButton onPress={handleAuthentication}/>
+                <LoginButton onPress={handleAuthentication} />
+                <Pressable style={styles.mainButton} onPress={() => navigation.navigate("Main")}>
+                    <Text>Go to Main</Text>
+                </Pressable>
             </View>
+        </View>
     </LinearGradient>
     );
 }
@@ -78,5 +82,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start', 
         marginBottom: 50, // Adjust bottom padding to move the container up
+    },
+    mainButton: {
+        backgroundColor: "white",
+        padding: 10,
+        marginLeft: "auto",
+        marginRight: "auto",
+        width: 320,
+        height: 50,
+        borderRadius: 25,
+        alignItems: "center",
+        justifyContent: "center",
+        marginVertical: 10
     }
 })
