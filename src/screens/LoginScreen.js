@@ -21,8 +21,8 @@ const LoginScreen = () => {
         const checkTokenValidity = async () => {
             const accessToken = await AsyncStorage.getItem("token");
             const expirationDate = await AsyncStorage.getItem("expirationDate");
-            console.log("acess token", accessToken);
-            console.log("expiration date", expirationDate);
+            console.log("acess token:", accessToken);
+            console.log("expiration date:", expirationDate);
 
             if (accessToken && expirationDate) {
                 const currentTime = Date.now();
@@ -48,9 +48,9 @@ const LoginScreen = () => {
             <Text style={styles.text}> Your Daily Song Discovery! </Text>
             <View style={styles.buttonContainer}>
                 <LoginButton onPress={handleAuthentication} />
-                <Pressable style={styles.mainButton} onPress={() => navigation.navigate("Main")}>
+                {/* <Pressable style={styles.mainButton} onPress={() => navigation.navigate("Main")}>
                     <Text>Go to Main</Text>
-                </Pressable>
+                </Pressable> */}
             </View>
         </View>
     </LinearGradient>

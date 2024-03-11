@@ -2,9 +2,9 @@ import { StyleSheet, Pressable, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import authenticate from "../services/authenticate";
 
-export default function LoginButton({navigator}) {
+export default function LoginButton({onPress}) {
     return (
-        <Pressable style={styles.spotifyButton} onPress={authenticate} navigator={navigator} >
+        <Pressable style={styles.spotifyButton} onPress={onPress} >
             <Text>Sign In with spotify</Text>
         </Pressable>
     );
