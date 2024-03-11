@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Button } from 'react-n
 import { Audio } from 'expo-av';
 import { AudioPlayer } from './AudioPlayer';
 import ButtonPlayer from './ButtonPlayer';
+import TextTicker from 'react-native-text-ticker'
 
 
 const Track = ({ index, track, playTrack }) => {
@@ -14,15 +15,19 @@ const Track = ({ index, track, playTrack }) => {
         playTrack(index)
     }
 
+    const toMs = (seconds) => {
+        return seconds * 1000;
+    }
+
     return (
         <TouchableOpacity style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image source={{ uri: track.album.images[0].url }} style={styles.image} />
             </View>
             <View style={styles.info}>
-                <Text style={styles.title}>{track.name}</Text>
-                <Text style={styles.artist}>{track.artists.map(artist => artist.name).join(', ')}</Text>
-                <Text style={styles.album}>{track.album.name}</Text>
+                <TextTicker style={styles.title} loop bounce marqueeDelay={2000}>{track.name}</TextTicker>
+                <TextTicker style={styles.artist} loop bounce marqueeDelay={2000}>{track.artists.map(artist => artist.name).join(', ')}</TextTicker>
+                <TextTicker style={styles.album} loop bounce marqueeDelay={2000}>{track.album.name}</TextTicker>
                 <Button title="Play" onPress={handlePlayTrack} />
                 {/* Render your play/pause button here */}
                 {/* <ButtonPlayer isPlaying={isPlaying} onPress={playSound} /> */}

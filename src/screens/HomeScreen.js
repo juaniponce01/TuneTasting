@@ -36,14 +36,14 @@ const HomeScreen = () => {
   const play = async (track) => {
     if (currentSound) {
       if (currentTrack.id === track.id) {
-        handlePlayPause(isPlaying);
+        handleCurrentTrackPlayPause();
         return;
       } else {
         await currentSound.stopAsync();
         console.log(currentTrack.name, "has stopped")
       }
     } 
-    console.log("Playing track: ", track.name);
+    console.log("Playing", track.name);
     const preview_url = track.preview_url;
     try {
       await Audio.setAudioModeAsync({
@@ -74,7 +74,7 @@ const HomeScreen = () => {
     console.log("Playback status: ", status);
   }
 
-  const handlePlayPause = async () => {
+  const handleCurrentTrackPlayPause = async () => {
     if (isPlaying) {
       await currentSound.pauseAsync();
       console.log(currentTrack.name, "has paused")
@@ -110,9 +110,9 @@ const HomeScreen = () => {
       </ScrollView>
       <View style={styles.buttonsContainer}>
         <TasteButton onPress={handleFetchTracks} />
-        <Pressable style={styles.loginButton} onPress={() => navigation.navigate("Login")}>
+        {/* <Pressable style={styles.loginButton} onPress={() => navigation.navigate("Login")}>
           <Text style={{color: 'white'}}>Go to Login</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
     </SafeAreaView>
   )
