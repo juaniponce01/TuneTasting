@@ -16,7 +16,9 @@ export default async function authenticate() {
                 "user-top-read",
                 "playlist-read-private",
                 "playlist-read-collaborative",
-                "playlist-modify-public" // or "playlist-modify-private"
+                "playlist-modify-public",
+                "user-read-playback-state",
+                "user-modify-playback-state", // or "playlist-modify-private"
             ],
             redirectUrl: "exp://localhost:8081/--/spotify-auth-callback",
         }

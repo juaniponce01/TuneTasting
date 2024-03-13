@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Button } from 'react-native';
-import { Audio } from 'expo-av';
-import { AudioPlayer } from './AudioPlayer';
-import ButtonPlayer from './ButtonPlayer';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Button, Pressable } from 'react-native';
 import TextTicker from 'react-native-text-ticker'
+import SpotifyButton from './SpotifyButton';
 
 
-const Track = ({ index, track, playTrack }) => {
-    const track_url = track.preview_url;
-    const [sound, setSound] = useState(null);
-    const [isPlaying, setIsPlaying] = useState(false);
+const Track = ({ track, play, toSpotify, isPlaying }) => {
 
     const handlePlayTrack = () => {
-        playTrack(index)
+        play(track)
+    }
+
+    const playOnSpotify = () => {
+        toSpotify(track)
     }
 
     const toMs = (seconds) => {
@@ -20,19 +19,22 @@ const Track = ({ index, track, playTrack }) => {
     }
 
     return (
-        <TouchableOpacity style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image source={{ uri: track.album.images[0].url }} style={styles.image} />
             </View>
             <View style={styles.info}>
-                <TextTicker style={styles.title} loop bounce marqueeDelay={2000}>{track.name}</TextTicker>
-                <TextTicker style={styles.artist} loop bounce marqueeDelay={2000}>{track.artists.map(artist => artist.name).join(', ')}</TextTicker>
+                <TextTicker style={styles.title} loop bounce duration={100*track.name.length} marqueeDelay={2000}>{track.name}</TextTicker>
+                <TextTicker style={styles.artist} bounce marqueeDelay={4000}>{track.artists.map(artist => artist.name).join(', ')}</TextTicker>
                 <TextTicker style={styles.album} loop bounce marqueeDelay={2000}>{track.album.name}</TextTicker>
-                <Button title="Play" onPress={handlePlayTrack} />
-                {/* Render your play/pause button here */}
-                {/* <ButtonPlayer isPlaying={isPlaying} onPress={playSound} /> */}
+                <View style={styles.playButtonContainer}>
+                {track.preview_url && (
+                    <Button title={!isPlaying ? "Listen Preview" : "Pause Preview"} onPress={handlePlayTrack} />
+                )}
+                </View>
+                <SpotifyButton trackUri={track.uri} />
             </View>
-        </TouchableOpacity>
+        </View>
     );
 };
 
@@ -73,6 +75,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#666',
     },
+    playButtonContainer: {
+        marginTop: 10,
+    }
     // Add more styles as needed
 });
 

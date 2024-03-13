@@ -8,6 +8,8 @@ import TrackList from '../components/TrackList'
 import { Audio } from 'expo-av';
 import { Player } from '../../PlayerContext';
 import { useNavigation } from '@react-navigation/native';
+import playSong from '../services/playSong'
+import getDeviceId from '../services/getDeviceId'
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -15,6 +17,9 @@ const HomeScreen = () => {
   const {currentTrack, setCurrentTrack} = useContext(Player);
   const [currentSound, setCurrentSound] = useState(null); // State to store the current sound [UNUSED]
   const [isPlaying, setIsPlaying] = useState(false); // State to store the current playing status [UNUSED]
+  const [progress, setProgress] = useState(0); // State to store the current progress of the track [UNUSED]
+  const [currentTime, setCurrentTime] = useState(0); // State to store the current time of the track [UNUSED]
+  const [totalDuration, setTotalDuration] = useState(0); // State to store the total duration of the track [UNUSED]
   
   
   const getTrackList = async () => {
@@ -24,13 +29,6 @@ const HomeScreen = () => {
     } else {
       handleFetchTracks();
     }
-  }
-
-  const playTrack = async (index) => {
-    if (trackList.length > 0) {
-      setCurrentTrack(trackList[index]);
-    } 
-    await play(trackList[index])
   }
 
   const play = async (track) => {
@@ -44,6 +42,7 @@ const HomeScreen = () => {
       }
     } 
     console.log("Playing", track.name);
+    console.log("length name:", 110*track.name.length)
     const preview_url = track.preview_url;
     try {
       await Audio.setAudioModeAsync({
@@ -59,10 +58,11 @@ const HomeScreen = () => {
           shouldPlay: true,
           isLooping: false,
         },
-        // onPlaybackStatusUpdate
+        onPlaybackStatusUpdate
       );
       setCurrentSound(sound);
-      // onPlaybackStatusUpdate(status);
+      setCurrentTrack(track);
+      onPlaybackStatusUpdate(status);
       setIsPlaying(status.isLoaded);
       await sound.playAsync();
     } catch (err) {
@@ -71,7 +71,19 @@ const HomeScreen = () => {
   }
 
   const onPlaybackStatusUpdate = async (status) => {
-    console.log("Playback status: ", status);
+    if (status.isLoaded && status.isPlaying) {
+      const progress = status.positionMillis / status.durationMillis;
+      // console.log("progresss", progress);
+      setProgress(progress);
+      setCurrentTime(status.positionMillis);
+      console.log("at", status.positionMillis, "of", status.durationMillis);
+      setTotalDuration(status.durationMillis);
+    }
+
+    if (status.didJustFinish === true) {
+      setCurrentSound(null);
+      setIsPlaying(false);
+    }
   }
 
   const handleCurrentTrackPlayPause = async () => {
@@ -93,6 +105,16 @@ const HomeScreen = () => {
     console.log("first preview url: ", recommendations[0].preview_url)
   };
 
+  const handlePlaySong = async (track) => {
+    const contextUri = `spotify:track:${track.id}`;
+    console.log(contextUri);
+    const device_id = await getDeviceId();
+    console.log("device_id", device_id);
+    if (device_id){
+      await playSong(contextUri, device_id);
+    }
+  }
+
   useEffect(() => {
     getTrackList();
   }, [])
@@ -104,13 +126,13 @@ const HomeScreen = () => {
         showsHorizontalScrollIndicator={false}
         horizontal={true}>
         {trackList.length > 0 ? 
-          <TrackList trackList={trackList} playTrack={playTrack} />
+          <TrackList trackList={trackList} play={play} toSpotify={handlePlaySong} isPlaying={isPlaying} trackPlaying={currentTrack} />
           : 
           <NoTrackList />}
       </ScrollView>
       <View style={styles.buttonsContainer}>
         <TasteButton onPress={handleFetchTracks} />
-        {/* <Pressable style={styles.loginButton} onPress={() => navigation.navigate("Login")}>
+        {/* <Pressable style={styles.loginButton} onPress={() => navigation.navigate("Login")}> 
           <Text style={{color: 'white'}}>Go to Login</Text>
         </Pressable> */}
       </View>

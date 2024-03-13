@@ -7,7 +7,14 @@ class TrackList extends React.Component {
         return (
             <View style={styles.container}>
                 {this.props.trackList.map((track, index) => (
-                    <Track key={index} index={index} track={track} playTrack={this.props.playTrack} />
+                    <Track 
+                        key={index} 
+                        track={track} 
+                        play={this.props.play} 
+                        toSpotify={this.props.toSpotify}
+                        isPlaying={
+                            this.props.isPlaying && (this.props.trackPlaying.id === track.id)
+                        } />
                 ))}
             </View>
         );
